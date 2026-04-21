@@ -1,208 +1,463 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<title>For My Love 💖</title>
-<meta name="viewport" content="width=device-width, initial-scale=1">
-
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+<title>Happy Birthday ❤️</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Lato:wght@300;400&display=swap" rel="stylesheet" />
 <style>
-body {
-  margin: 0;
-  font-family: 'Segoe UI', sans-serif;
-  background: linear-gradient(135deg, #ff758c, #ff4d6d);
-  min-height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  color: white;
-}
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-/* Card */
-.card-box {
-  width: 92%;
-  max-width: 420px;
-  padding: 24px;
-  border-radius: 20px;
-  background: rgba(255,255,255,0.15);
-  backdrop-filter: blur(14px);
-  text-align: center;
-  position: relative;
-}
-
-/* Buttons row */
-.btn-row {
-  display: flex;
-  gap: 14px;
-  margin-top: 20px;
-}
-
-/* Buttons (same size always) */
-.btn-love {
-  flex: 1;
-  height: 48px;
-  border: none;
-  border-radius: 25px;
-  font-size: 16px;
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
-
-.btn-love:active {
-  transform: scale(0.92);
-}
-
-/* Yes button */
-#yesBtn {
-  background: white;
-  color: #ff4d6d;
-  font-weight: 600;
-}
-
-/* No button (cleaner look) */
-#noBtn {
-  background: rgba(255,255,255,0.85);
-  color: #ff4d6d;
-  font-weight: 500;
-}
-
-/* Message */
-#message {
-  display: none;
-  margin-top: 16px;
-}
-
-/* Letter */
-.love-text {
-  display: none;
-  margin-top: 16px;
-  max-height: 220px;
-  overflow-y: auto;
-  text-align: left;
-  line-height: 1.6;
-  padding: 15px;
-  border-radius: 12px;
-  background: rgba(255,255,255,0.2);
-  white-space: pre-line;
-  font-size: 14px;
-}
-
-/* Hearts */
-.heart {
-  position: fixed;
-  bottom: -20px;
-  animation: floatUp linear infinite;
-  pointer-events: none;
-}
-
-@keyframes floatUp {
-  100% {
-    transform: translateY(-110vh);
-    opacity: 0;
+  :root {
+    --pink-light: #ffd6e0;
+    --pink-mid:   #ffb3c6;
+    --rose:       #ff758c;
+    --crimson:    #c9184a;
+    --deep:       #800f2f;
+    --card-bg:    rgba(255, 255, 255, 0.22);
+    --glass-border: rgba(255, 255, 255, 0.45);
+    --text-dark:  #5a0020;
+    --text-body:  #7a2340;
+    --shadow:     rgba(180, 30, 80, 0.18);
   }
-}
+
+  html, body {
+    min-height: 100%;
+    width: 100%;
+    overflow-x: hidden;
+  }
+
+  body {
+    font-family: 'Lato', sans-serif;
+    background: linear-gradient(135deg, #ffe0eb 0%, #ffb3c6 30%, #ff758c 65%, #c9184a 100%);
+    background-attachment: fixed;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    padding: 24px 16px;
+    position: relative;
+  }
+
+  /* ── Hearts canvas ── */
+  #hearts-canvas {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* ── Card ── */
+  .card {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    max-width: 480px;
+    background: var(--card-bg);
+    backdrop-filter: blur(18px) saturate(160%);
+    -webkit-backdrop-filter: blur(18px) saturate(160%);
+    border: 1.5px solid var(--glass-border);
+    border-radius: 28px;
+    padding: 44px 36px 40px;
+    box-shadow:
+      0 8px 32px var(--shadow),
+      0 1.5px 0 var(--glass-border) inset,
+      0 -1.5px 0 rgba(255,255,255,0.1) inset;
+    text-align: center;
+    overflow: hidden;
+  }
+
+  /* ── Badge ── */
+  .badge {
+    display: inline-block;
+    background: linear-gradient(135deg, #ff758c, #c9184a);
+    color: #fff;
+    font-family: 'Lato', sans-serif;
+    font-weight: 300;
+    font-size: 0.72rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    padding: 5px 14px;
+    border-radius: 50px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 12px rgba(201,24,74,0.3);
+  }
+
+  /* ── Title ── */
+  h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2rem, 7vw, 2.7rem);
+    color: var(--deep);
+    line-height: 1.15;
+    margin-bottom: 10px;
+    letter-spacing: -0.01em;
+  }
+
+  .subtitle {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    color: var(--crimson);
+    font-size: clamp(0.95rem, 3.5vw, 1.05rem);
+    margin-bottom: 32px;
+    line-height: 1.6;
+    opacity: 0.9;
+  }
+
+  /* ── Question ── */
+  .question {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1.05rem, 4vw, 1.25rem);
+    color: var(--text-dark);
+    margin-bottom: 28px;
+    font-weight: 400;
+  }
+
+  /* ── Button row ── */
+  .btn-row {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+    margin-bottom: 8px;
+    position: relative;
+    min-height: 56px;
+  }
+
+  .btn {
+    flex: 0 0 auto;
+    width: 130px;
+    height: 52px;
+    border: none;
+    border-radius: 50px;
+    font-family: 'Lato', sans-serif;
+    font-size: 1rem;
+    font-weight: 400;
+    letter-spacing: 0.03em;
+    cursor: pointer;
+    transition: transform 0.15s cubic-bezier(.34,1.56,.64,1), box-shadow 0.15s ease;
+    -webkit-tap-highlight-color: transparent;
+    user-select: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    white-space: nowrap;
+  }
+
+  .btn:active { transform: scale(0.93) !important; }
+
+  #yes-btn {
+    background: linear-gradient(135deg, #ff758c 0%, #c9184a 100%);
+    color: #fff;
+    box-shadow: 0 4px 18px rgba(201,24,74,0.38), 0 1px 0 rgba(255,255,255,0.25) inset;
+  }
+  #yes-btn:hover { transform: scale(1.05); box-shadow: 0 6px 24px rgba(201,24,74,0.48); }
+
+  #no-btn {
+    background: rgba(255,255,255,0.55);
+    color: var(--crimson);
+    box-shadow: 0 2px 12px rgba(180,30,80,0.15);
+    border: 1.5px solid rgba(255,117,140,0.35);
+    transition: transform 0.38s cubic-bezier(.34,1.56,.64,1), box-shadow 0.15s ease, left 0.38s cubic-bezier(.34,1.56,.64,1), top 0.38s cubic-bezier(.34,1.56,.64,1), opacity 0.3s ease;
+    position: relative;
+  }
+  #no-btn:hover { transform: scale(1.05); }
+
+  /* ── Love message ── */
+  #love-msg {
+    display: none;
+    margin-top: 24px;
+    padding: 22px 20px;
+    background: rgba(255,255,255,0.35);
+    border-radius: 18px;
+    border: 1px solid rgba(255,255,255,0.55);
+    text-align: left;
+  }
+  #love-msg.visible { display: block; }
+
+  .love-header {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.15rem;
+    color: var(--deep);
+    margin-bottom: 12px;
+    text-align: center;
+  }
+
+  #typed-text {
+    font-size: 0.93rem;
+    line-height: 1.75;
+    color: var(--text-body);
+    min-height: 2em;
+  }
+
+  .cursor {
+    display: inline-block;
+    width: 2px;
+    height: 1em;
+    background: var(--crimson);
+    margin-left: 2px;
+    vertical-align: text-bottom;
+    animation: blink 0.8s step-start infinite;
+  }
+  @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }
+
+  /* ── Confetti burst (inline SVG hearts) ── */
+  .burst {
+    position: absolute;
+    pointer-events: none;
+    font-size: 1.3rem;
+    animation: burstUp 0.9s ease-out forwards;
+    z-index: 10;
+  }
+  @keyframes burstUp {
+    0%   { opacity:1; transform: translateY(0) scale(1); }
+    100% { opacity:0; transform: translateY(-60px) scale(0.5); }
+  }
+
+  /* ── Responsive tweaks ── */
+  @media (max-width: 400px) {
+    .card { padding: 34px 20px 30px; }
+    .btn  { width: 110px; height: 48px; font-size: 0.9rem; }
+    .btn-row { gap: 14px; }
+  }
 </style>
 </head>
-
 <body>
 
-<div class="card-box">
-  <h2>Happy Birthday Meenamma 🎉💖</h2>
-  <h3>By clicking yes, you agree to be mine forever 💕</h3>
+<canvas id="hearts-canvas"></canvas>
 
-  <div class="btn-row">
-    <button id="yesBtn" class="btn-love">Yes 💖</button>
-    <button id="noBtn" class="btn-love">No 😜</button>
+<div class="card" id="card">
+  <div class="badge">A little something for you ✨</div>
+  <h1>Happy Birthday Meenamma❤️</h1>
+  <p class="subtitle">By clicking yes<br>you agree to be mine forever.</p>
+
+  <p class="question">You can't say no to me of course🤓</p>
+
+  <div class="btn-row" id="btn-row">
+    <button class="btn" id="yes-btn" onclick="onYes()">Yes 🤍</button>
+    <button class="btn" id="no-btn"  onclick="onNo()">No 🥱😒</button>
   </div>
 
-  <div id="message">I knew it 😌💖 You love me soooo much ❤️</div>
-  <div id="letter" class="love-text"></div>
+  <div id="love-msg">
+    <p class="love-header">I knew you'd say yes 🥰</p>
+    <div id="typed-text"><span class="cursor"></span></div>
+  </div>
 </div>
 
 <script>
-const noBtn = document.getElementById("noBtn");
-const yesBtn = document.getElementById("yesBtn");
-const card = document.querySelector(".card-box");
-const letterBox = document.getElementById("letter");
+/* ────────────────────────────────────────────
+   FLOATING HEARTS CANVAS
+──────────────────────────────────────────── */
+(function() {
+  const canvas = document.getElementById('hearts-canvas');
+  const ctx    = canvas.getContext('2d');
+  let W, H, hearts = [];
 
-let index = 0;
-
-/* TEXT */
-const text = `Happy birthday meenammaaaaaa🥳❤️
-... (your full text stays here unchanged) ...`;
-
-/* typing */
-function typeText() {
-  if (index < text.length) {
-    letterBox.innerHTML += text.charAt(index);
-    index++;
-    letterBox.scrollTop = letterBox.scrollHeight;
-    setTimeout(typeText, 10);
+  function resize() {
+    W = canvas.width  = window.innerWidth;
+    H = canvas.height = window.innerHeight;
   }
-}
+  window.addEventListener('resize', resize);
+  resize();
 
-/* YES */
-yesBtn.addEventListener("click", () => {
-  document.getElementById("message").style.display = "block";
-  letterBox.style.display = "block";
-  noBtn.style.display = "none";
+  const COLORS = ['#ffb3c6','#ff758c','#ff4d6d','#c9184a','#ff85a1','#ffd6e0'];
+  const COUNT  = 55;
 
-  letterBox.innerHTML = "";
-  index = 0;
-  typeText();
-});
-
-/* 🔥 move on click (but keep layout intact) */
-noBtn.addEventListener("click", (e) => {
-  e.preventDefault();
-
-  const rect = card.getBoundingClientRect();
-  const yesRect = yesBtn.getBoundingClientRect();
-
-  let x, y, safe = false;
-  const padding = 20;
-
-  while (!safe) {
-    x = Math.random() * (rect.width - noBtn.offsetWidth);
-    y = Math.random() * (rect.height - noBtn.offsetHeight);
-
-    const noRect = {
-      left: x + rect.left,
-      right: x + rect.left + noBtn.offsetWidth,
-      top: y + rect.top,
-      bottom: y + rect.top + noBtn.offsetHeight
+  function makeHeart() {
+    return {
+      x:     Math.random() * W,
+      y:     H + 30,
+      size:  8 + Math.random() * 22,
+      speed: 0.6 + Math.random() * 1.4,
+      drift: (Math.random() - 0.5) * 0.6,
+      rot:   Math.random() * Math.PI * 2,
+      rotV:  (Math.random() - 0.5) * 0.03,
+      alpha: 0.4 + Math.random() * 0.5,
+      color: COLORS[Math.floor(Math.random() * COLORS.length)],
     };
-
-    const overlap =
-      !(noRect.right < yesRect.left - padding ||
-        noRect.left > yesRect.right + padding ||
-        noRect.bottom < yesRect.top - padding ||
-        noRect.top > yesRect.bottom + padding);
-
-    if (!overlap) safe = true;
   }
 
-  /* temporarily float */
-  noBtn.style.position = "absolute";
-  noBtn.style.left = x + "px";
-  noBtn.style.top = y + "px";
-});
+  for (let i = 0; i < COUNT; i++) {
+    const h = makeHeart();
+    h.y = Math.random() * H;   // seed across screen on load
+    hearts.push(h);
+  }
 
-/* ❤️ more hearts */
-function createHeart() {
-  const heart = document.createElement("div");
-  heart.classList.add("heart");
-  heart.innerHTML = "❤️";
+  function drawHeart(ctx, x, y, size, color, alpha, rot) {
+    ctx.save();
+    ctx.globalAlpha = alpha;
+    ctx.translate(x, y);
+    ctx.rotate(rot);
+    ctx.beginPath();
+    const s = size / 10;
+    ctx.moveTo(0, -s * 2.5);
+    ctx.bezierCurveTo( s * 3.5, -s * 6,  s * 7,  -s * 2,  0,  s * 2.5);
+    ctx.bezierCurveTo(-s * 7,  -s * 2, -s * 3.5, -s * 6,  0, -s * 2.5);
+    ctx.fillStyle = color;
+    ctx.fill();
+    ctx.restore();
+  }
 
-  heart.style.left = Math.random() * 100 + "vw";
-  heart.style.fontSize = (14 + Math.random() * 18) + "px";
-  heart.style.animationDuration = (3 + Math.random() * 3) + "s";
+  function loop() {
+    ctx.clearRect(0, 0, W, H);
+    hearts.forEach((h, i) => {
+      drawHeart(ctx, h.x, h.y, h.size, h.color, h.alpha, h.rot);
+      h.y   -= h.speed;
+      h.x   += h.drift;
+      h.rot += h.rotV;
+      if (h.y < -40) hearts[i] = makeHeart();
+    });
+    requestAnimationFrame(loop);
+  }
+  loop();
+})();
 
-  document.body.appendChild(heart);
-  setTimeout(() => heart.remove(), 6000);
+/* ────────────────────────────────────────────
+   BUTTON LOGIC
+──────────────────────────────────────────── */
+const LOVE_LETTER = `Happy birthday meenammaaaaaa🥳❤️
+
+I've been sitting thinking what to say and honestly nothing ever feels enough when it comes to ya daa enaku words la solla therla how much you mean to me and I wanna show that in my actions but sadly you're not here but one day we'll be together and am gonna show you all the love you deserve mah babeyyyy 😌❤️ you didn't just come into my life you became a another half of my life and you become my peace, mah home even when miles away, mah Happieness etc etccc....❤️😙🫂
+
+It's crazy you know? You managed to get into mah heart in such a short time which none did before it's like it feels like a destiny. This distances, it's nothing compared to when I can finally hold your hands, hold you in my hands like i always dream 🥺❤️ if something happens you're the first person I wanna tell everything to. You're in my thoughts 24/7 it's like you did some black magic lol 🫣😋 ( iykyk ). If things aren't going well you're the only person I seek comfort in, mah home🥹❤️ you don't even know how much you do for me just by being you mah belowed eruma maaduuu😋❤️
+
+I won't lie... It's hurt a little. I wish more than anything that I could be there when you right now and take you out to places you wanna go and kiss you in your forehead and wanna say I'd wanna say I love you but it's just a small things compared to the lappy life that we gonna lead when we're finally together in person with lotta fights, romance, dates and annoying you ofc and etc etc... i can't wait to be there with you and ngl when things weren't right between us I felt so hurt but we managed to over come that and we gonna overcome every but of problems that comes to us too so don't you worry a bit mah queen 👑❤️🥹 am gonna choose you every single time and again and again no matter what and yea I sometimes slightly wish namma munnadi maari pesitu sanda potutu irundha maari eh ipovum irundha nalla irukum nu🥺🫂
+
+You're not just my girlfriend babeyy you're mah person that I want beside me in everything. The one I wanna grow with the one I wanna see my future self with no matter what and yea I message up sometimes adhuvum kevalama ik am a mess and am not perfect for you but I'll try to be the man that makes you happy every single day no matter what 😙❤️
+
+Thank you for being in my life. Thank you for loving me the way you do. Thank you for being you. Thank you for choosing me. Trust me when I say this am genuinely so lucky to have you in my life i may not say this often but am writing this with a happy and pure heart mah babeyyy 🥺❤️
+
+So on this precious day, your birthday I just want you to know this babeyy, no matter how far we're right now, you've my heart completely and and am holding onto you always. I won't let you down and go anywhere without me I'll come and annoy you every single second and when you're not ok you got my shoulders mah babeyy this is not gonna change anytime soon 🥸❤️
+
+Just stay wid me, okay? That's all I want from you and yea I don't have some small expectations but you're perfect the way you're so I don't wanna say all that😌❤️
+
+Once again happie birthday mah balli mandaaaaaaa🥸🦎👽
+
+I love you so muchhhhhhhh ❤️
+I love you more than I can ever explainnnnn
+MUAHHHHHHHHHHHHHHHH 😙❤️`;
+
+let typed = false;
+
+function onYes() {
+  if (typed) return;
+  typed = true;
+
+  // Hide No button
+  const noBtn = document.getElementById('no-btn');
+  noBtn.style.opacity = '0';
+  noBtn.style.pointerEvents = 'none';
+  setTimeout(() => { noBtn.style.display = 'none'; }, 320);
+
+  // Center Yes button
+  const yesBtn = document.getElementById('yes-btn');
+  yesBtn.style.transform = 'scale(1.08)';
+
+  // Burst hearts from button
+  spawnBurst(yesBtn);
+
+  // Show message box
+  const msgBox = document.getElementById('love-msg');
+  msgBox.classList.add('visible');
+
+  // Type the letter
+  typeText(LOVE_LETTER, document.getElementById('typed-text'));
 }
 
-setInterval(createHeart, 200);
-</script>
+function typeText(text, el) {
+  el.innerHTML = '<span class="cursor"></span>';
+  let i = 0;
+  const cursor = el.querySelector('.cursor');
 
+  function tick() {
+    if (i < text.length) {
+      const ch = text[i++];
+      const node = document.createTextNode(ch === '\n' ? '\n' : ch);
+      el.insertBefore(node, cursor);
+      if (ch === '\n') {
+        el.insertBefore(document.createElement('br'), cursor);
+        el.insertBefore(document.createElement('br'), cursor);
+      }
+      const delay = ch === '.' || ch === ',' || ch === '!' ? 55 :
+                    ch === ' ' ? 18 : 28;
+      setTimeout(tick, delay);
+    } else {
+      cursor.style.display = 'none';
+    }
+  }
+  tick();
+}
+
+function spawnBurst(btn) {
+  const rect = btn.getBoundingClientRect();
+  const cardRect = document.getElementById('card').getBoundingClientRect();
+  const cx = rect.left + rect.width / 2  - cardRect.left;
+  const cy = rect.top  + rect.height / 2 - cardRect.top;
+
+  for (let i = 0; i < 8; i++) {
+    const el = document.createElement('div');
+    el.className = 'burst';
+    el.textContent = ['❤️','💖','💗','💝','💕'][Math.floor(Math.random()*5)];
+    const angle = (i / 8) * Math.PI * 2;
+    const dist  = 30 + Math.random() * 20;
+    el.style.left = (cx + Math.cos(angle) * dist) + 'px';
+    el.style.top  = (cy + Math.sin(angle) * dist) + 'px';
+    document.getElementById('card').appendChild(el);
+    setTimeout(() => el.remove(), 1000);
+  }
+}
+
+/* ── No button escapology ── */
+function onNo() {
+  const noBtn  = document.getElementById('no-btn');
+  const yesBtn = document.getElementById('yes-btn');
+  const row    = document.getElementById('btn-row');
+
+  const rowW = row.offsetWidth;
+  const rowH = row.offsetHeight;
+  const btnW = noBtn.offsetWidth;
+  const btnH = noBtn.offsetHeight;
+
+  // Available horizontal space (card padding accounted for by row width)
+  // We move No inside the card by changing its margin/position.
+  // Strategy: toggle absolute positioning within the row container.
+  if (noBtn.style.position !== 'absolute') {
+    // Switch to absolute so we can move it freely
+    noBtn.style.position = 'absolute';
+    noBtn.style.transition = 'left 0.4s cubic-bezier(.34,1.56,.64,1), top 0.4s cubic-bezier(.34,1.56,.64,1), transform 0.15s ease, opacity 0.3s ease';
+  }
+
+  // Keep row tall enough
+  row.style.minHeight = Math.max(rowH, 80) + 'px';
+  row.style.position  = 'relative';
+
+  // Yes button bounds (in row coords)
+  const yesRect = yesBtn.getBoundingClientRect();
+  const rowRect  = row.getBoundingClientRect();
+  const yesL = yesRect.left - rowRect.left;
+  const yesT = yesRect.top  - rowRect.top;
+  const yesR = yesL + yesRect.width;
+  const yesB = yesT + yesRect.height;
+
+  let attempts = 0, newL, newT;
+  const maxL = rowW - btnW;
+  const maxT = Math.max(rowH, 80) - btnH;
+
+  do {
+    newL = Math.random() * Math.max(maxL, 0);
+    newT = Math.random() * Math.max(maxT, 0);
+    attempts++;
+    // Check overlap with Yes button (add 12px padding)
+    const noR = newL + btnW;
+    const noB = newT + btnH;
+    const overlaps = !(noR + 12 < yesL || newL - 12 > yesR ||
+                       noB + 12 < yesT || newT - 12 > yesB);
+    if (!overlaps) break;
+  } while (attempts < 40);
+
+  noBtn.style.left = newL + 'px';
+  noBtn.style.top  = newT + 'px';
+}
+</script>
 </body>
 </html>
