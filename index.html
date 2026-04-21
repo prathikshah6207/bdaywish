@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>For My Love 💖</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<style>
+body {
+  margin: 0;
+  font-family: 'Segoe UI', sans-serif;
+  background: linear-gradient(135deg, #ff758c, #ff4d6d);
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+}
+
+/* Card */
+.card-box {
+  width: 92%;
+  max-width: 420px;
+  padding: 22px;
+  border-radius: 18px;
+  background: rgba(255,255,255,0.15);
+  backdrop-filter: blur(12px);
+  text-align: center;
+}
+
+/* Buttons */
+.btn-wrapper {
+  position: relative;
+  margin-top: 18px;
+  height: 70px;
+}
+
+.btn-row {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+}
+
+.btn-love {
+  border: none;
+  border-radius: 25px;
+  padding: 12px 22px;
+  font-size: 16px;
+}
+
+#yesBtn {
+  background: white;
+  color: #ff4d6d;
+}
+
+#noBtn {
+  background: #ffc2d1;
+}
+
+/* Message */
+#message {
+  display: none;
+  margin-top: 16px;
+}
+
+/* Letter */
+.love-text {
+  display: none;
+  margin-top: 16px;
+  max-height: 220px;
+  overflow-y: auto;
+  text-align: left;
+  line-height: 1.6;
+  padding: 15px;
+  border-radius: 12px;
+  background: rgba(255,255,255,0.2);
+  white-space: pre-line;
+  font-size: 14px;
+}
+
+/* Hearts */
+.heart {
+  position: fixed;
+  bottom: -10px;
+  font-size: 16px;
+  animation: floatUp 5s linear infinite;
+  opacity: 0.6;
+  pointer-events: none;
+}
+
+@keyframes floatUp {
+  100% {
+    transform: translateY(-100vh);
+    opacity: 0;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<div class="card-box">
+  <h2>Happy Birthday Meenamma 🎉💖</h2>
+  <h3>By clicking yes, you agree to be mine forever 💕</h3>
+
+  <div class="btn-wrapper" id="wrapper">
+    <div class="btn-row">
+      <button id="yesBtn" class="btn-love">Yes 💖</button>
+      <button id="noBtn" class="btn-love">No 😜</button>
+    </div>
+  </div>
+
+  <div id="message">I knew it 😌💖 You love me soooo much ❤️</div>
+  <div id="letter" class="love-text"></div>
+</div>
+
+<script>
+const noBtn = document.getElementById("noBtn");
+const yesBtn = document.getElementById("yesBtn");
+const wrapper = document.getElementById("wrapper");
+const letterBox = document.getElementById("letter");
+
+let index = 0;
+
+/* TEXT (unchanged) */
+const text = `Happy birthday meenammaaaaaa🥳❤️
+... (your full text stays here unchanged) ...`;
+
+/* typing */
+function typeText() {
+  if (index < text.length) {
+    letterBox.innerHTML += text.charAt(index);
+    index++;
+    letterBox.scrollTop = letterBox.scrollHeight;
+    setTimeout(typeText, 12);
+  }
+}
+
+/* YES */
+yesBtn.addEventListener("click", () => {
+  document.getElementById("message").style.display = "block";
+  letterBox.style.display = "block";
+  noBtn.style.display = "none";
+
+  letterBox.innerHTML = "";
+  index = 0;
+  typeText();
+});
+
+/* 🔥 REAL MOBILE ESCAPE LOGIC */
+function moveNoButton() {
+  const maxX = wrapper.clientWidth - noBtn.offsetWidth;
+  const maxY = wrapper.clientHeight - noBtn.offsetHeight;
+
+  noBtn.style.position = "absolute";
+  noBtn.style.left = Math.random() * maxX + "px";
+  noBtn.style.top = Math.random() * maxY + "px";
+}
+
+/* Move BEFORE touch lands */
+wrapper.addEventListener("touchmove", moveNoButton);
+
+/* Desktop fallback */
+noBtn.addEventListener("mouseenter", moveNoButton);
+
+/* hearts */
+function createHeart() {
+  const heart = document.createElement("div");
+  heart.classList.add("heart");
+  heart.innerHTML = "❤️";
+
+  heart.style.left = Math.random() * 100 + "vw";
+  heart.style.fontSize = (12 + Math.random() * 10) + "px";
+
+  document.body.appendChild(heart);
+  setTimeout(() => heart.remove(), 5000);
+}
+
+setInterval(createHeart, 700);
+</script>
+
+</body>
+</html>
