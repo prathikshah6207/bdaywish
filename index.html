@@ -21,40 +21,48 @@ body {
 .card-box {
   width: 92%;
   max-width: 420px;
-  padding: 22px;
-  border-radius: 18px;
+  padding: 24px;
+  border-radius: 20px;
   background: rgba(255,255,255,0.15);
-  backdrop-filter: blur(12px);
+  backdrop-filter: blur(14px);
   text-align: center;
-}
-
-/* Buttons */
-.btn-wrapper {
   position: relative;
-  margin-top: 18px;
-  height: 70px;
 }
 
+/* Buttons row */
 .btn-row {
   display: flex;
-  justify-content: center;
-  gap: 16px;
+  gap: 14px;
+  margin-top: 20px;
 }
 
+/* Buttons (same size always) */
 .btn-love {
+  flex: 1;
+  height: 48px;
   border: none;
   border-radius: 25px;
-  padding: 12px 22px;
   font-size: 16px;
+  cursor: pointer;
+  transition: all 0.2s ease;
 }
 
+.btn-love:active {
+  transform: scale(0.92);
+}
+
+/* Yes button */
 #yesBtn {
   background: white;
   color: #ff4d6d;
+  font-weight: 600;
 }
 
+/* No button (cleaner look) */
 #noBtn {
-  background: #ffc2d1;
+  background: rgba(255,255,255,0.85);
+  color: #ff4d6d;
+  font-weight: 500;
 }
 
 /* Message */
@@ -81,16 +89,14 @@ body {
 /* Hearts */
 .heart {
   position: fixed;
-  bottom: -10px;
-  font-size: 16px;
-  animation: floatUp 5s linear infinite;
-  opacity: 0.6;
+  bottom: -20px;
+  animation: floatUp linear infinite;
   pointer-events: none;
 }
 
 @keyframes floatUp {
   100% {
-    transform: translateY(-100vh);
+    transform: translateY(-110vh);
     opacity: 0;
   }
 }
@@ -103,11 +109,9 @@ body {
   <h2>Happy Birthday Meenamma 🎉💖</h2>
   <h3>By clicking yes, you agree to be mine forever 💕</h3>
 
-  <div class="btn-wrapper" id="wrapper">
-    <div class="btn-row">
-      <button id="yesBtn" class="btn-love">Yes 💖</button>
-      <button id="noBtn" class="btn-love">No 😜</button>
-    </div>
+  <div class="btn-row">
+    <button id="yesBtn" class="btn-love">Yes 💖</button>
+    <button id="noBtn" class="btn-love">No 😜</button>
   </div>
 
   <div id="message">I knew it 😌💖 You love me soooo much ❤️</div>
@@ -117,12 +121,12 @@ body {
 <script>
 const noBtn = document.getElementById("noBtn");
 const yesBtn = document.getElementById("yesBtn");
-const wrapper = document.getElementById("wrapper");
+const card = document.querySelector(".card-box");
 const letterBox = document.getElementById("letter");
 
 let index = 0;
 
-/* TEXT (unchanged) */
+/* TEXT */
 const text = `Happy birthday meenammaaaaaa🥳❤️
 ... (your full text stays here unchanged) ...`;
 
@@ -132,7 +136,7 @@ function typeText() {
     letterBox.innerHTML += text.charAt(index);
     index++;
     letterBox.scrollTop = letterBox.scrollHeight;
-    setTimeout(typeText, 12);
+    setTimeout(typeText, 10);
   }
 }
 
@@ -147,36 +151,57 @@ yesBtn.addEventListener("click", () => {
   typeText();
 });
 
-/* 🔥 REAL MOBILE ESCAPE LOGIC */
-function moveNoButton() {
-  const maxX = wrapper.clientWidth - noBtn.offsetWidth;
-  const maxY = wrapper.clientHeight - noBtn.offsetHeight;
+/* 🔥 move on click (but keep layout intact) */
+noBtn.addEventListener("click", (e) => {
+  e.preventDefault();
 
+  const rect = card.getBoundingClientRect();
+  const yesRect = yesBtn.getBoundingClientRect();
+
+  let x, y, safe = false;
+  const padding = 20;
+
+  while (!safe) {
+    x = Math.random() * (rect.width - noBtn.offsetWidth);
+    y = Math.random() * (rect.height - noBtn.offsetHeight);
+
+    const noRect = {
+      left: x + rect.left,
+      right: x + rect.left + noBtn.offsetWidth,
+      top: y + rect.top,
+      bottom: y + rect.top + noBtn.offsetHeight
+    };
+
+    const overlap =
+      !(noRect.right < yesRect.left - padding ||
+        noRect.left > yesRect.right + padding ||
+        noRect.bottom < yesRect.top - padding ||
+        noRect.top > yesRect.bottom + padding);
+
+    if (!overlap) safe = true;
+  }
+
+  /* temporarily float */
   noBtn.style.position = "absolute";
-  noBtn.style.left = Math.random() * maxX + "px";
-  noBtn.style.top = Math.random() * maxY + "px";
-}
+  noBtn.style.left = x + "px";
+  noBtn.style.top = y + "px";
+});
 
-/* Move BEFORE touch lands */
-wrapper.addEventListener("touchmove", moveNoButton);
-
-/* Desktop fallback */
-noBtn.addEventListener("mouseenter", moveNoButton);
-
-/* hearts */
+/* ❤️ more hearts */
 function createHeart() {
   const heart = document.createElement("div");
   heart.classList.add("heart");
   heart.innerHTML = "❤️";
 
   heart.style.left = Math.random() * 100 + "vw";
-  heart.style.fontSize = (12 + Math.random() * 10) + "px";
+  heart.style.fontSize = (14 + Math.random() * 18) + "px";
+  heart.style.animationDuration = (3 + Math.random() * 3) + "s";
 
   document.body.appendChild(heart);
-  setTimeout(() => heart.remove(), 5000);
+  setTimeout(() => heart.remove(), 6000);
 }
 
-setInterval(createHeart, 700);
+setInterval(createHeart, 200);
 </script>
 
 </body>
